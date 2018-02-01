@@ -1,0 +1,111 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'install', '-g', 'ldf-client' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.37
+4 verbose node symlink /usr/bin/node
+5 verbose cache add [ 'ldf-client', null ]
+6 verbose cache add name=undefined spec="ldf-client" args=["ldf-client",null]
+7 verbose parsed url { protocol: null,
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: null,
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: null,
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: 'ldf-client',
+7 verbose parsed url   path: 'ldf-client',
+7 verbose parsed url   href: 'ldf-client' }
+8 silly lockFile 11e1b427-ldf-client ldf-client
+9 verbose lock ldf-client /home/olaf/.npm/11e1b427-ldf-client.lock
+10 silly lockFile 11e1b427-ldf-client ldf-client
+11 silly lockFile 11e1b427-ldf-client ldf-client
+12 verbose addNamed [ 'ldf-client', '' ]
+13 verbose addNamed [ null, '*' ]
+14 silly lockFile 2ea2ea15-ldf-client ldf-client@
+15 verbose lock ldf-client@ /home/olaf/.npm/2ea2ea15-ldf-client.lock
+16 silly addNameRange { name: 'ldf-client', range: '*', hasData: false }
+17 verbose request where is /ldf-client
+18 verbose request registry https://registry.npmjs.org/
+19 verbose request id 71946d6535cebcfb
+20 verbose url raw /ldf-client
+21 verbose url resolving [ 'https://registry.npmjs.org/', './ldf-client' ]
+22 verbose url resolved https://registry.npmjs.org/ldf-client
+23 verbose request where is https://registry.npmjs.org/ldf-client
+24 info trying registry request attempt 1 at 23:28:31
+25 verbose etag "AHDUN6DMRFQA52WPMAD0UPLQ0"
+26 http GET https://registry.npmjs.org/ldf-client
+27 http 200 https://registry.npmjs.org/ldf-client
+28 silly registry.get cb [ 200,
+28 silly registry.get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+28 silly registry.get     etag: '"1KO3EY2KOQZ3UUPJG80STS47L"',
+28 silly registry.get     'content-type': 'application/json',
+28 silly registry.get     'cache-control': 'max-age=300',
+28 silly registry.get     'content-length': '33565',
+28 silly registry.get     'accept-ranges': 'bytes',
+28 silly registry.get     date: 'Sun, 17 Apr 2016 21:28:32 GMT',
+28 silly registry.get     via: '1.1 varnish',
+28 silly registry.get     age: '0',
+28 silly registry.get     connection: 'keep-alive',
+28 silly registry.get     'x-served-by': 'cache-ams4146-AMS',
+28 silly registry.get     'x-cache': 'MISS',
+28 silly registry.get     'x-cache-hits': '0',
+28 silly registry.get     'x-timer': 'S1460928512.121642,VS0,VE189',
+28 silly registry.get     vary: 'Accept-Encoding' } ]
+29 silly addNameRange number 2 { name: 'ldf-client', range: '*', hasData: true }
+30 silly addNameRange versions [ 'ldf-client',
+30 silly addNameRange   [ '0.1.0',
+30 silly addNameRange     '0.2.0',
+30 silly addNameRange     '0.2.1',
+30 silly addNameRange     '0.2.2',
+30 silly addNameRange     '1.0.0',
+30 silly addNameRange     '1.1.0',
+30 silly addNameRange     '1.1.1',
+30 silly addNameRange     '1.1.2',
+30 silly addNameRange     '1.1.3',
+30 silly addNameRange     '1.1.4',
+30 silly addNameRange     '1.2.0',
+30 silly addNameRange     '1.2.1',
+30 silly addNameRange     '1.2.2',
+30 silly addNameRange     '1.2.3',
+30 silly addNameRange     '1.2.4',
+30 silly addNameRange     '1.2.5',
+30 silly addNameRange     '1.2.6',
+30 silly addNameRange     '1.3.0',
+30 silly addNameRange     '1.3.1',
+30 silly addNameRange     '1.3.2' ] ]
+31 verbose addNamed [ 'ldf-client', '1.3.2' ]
+32 verbose addNamed [ '1.3.2', '1.3.2' ]
+33 silly lockFile c6b6e9f1-ldf-client-1-3-2 ldf-client@1.3.2
+34 verbose lock ldf-client@1.3.2 /home/olaf/.npm/c6b6e9f1-ldf-client-1-3-2.lock
+35 silly lockFile e6885f08--ldf-client-ldf-client-1-3-2-tgz https://registry.npmjs.org/ldf-client/-/ldf-client-1.3.2.tgz
+36 verbose lock https://registry.npmjs.org/ldf-client/-/ldf-client-1.3.2.tgz /home/olaf/.npm/e6885f08--ldf-client-ldf-client-1-3-2-tgz.lock
+37 verbose addRemoteTarball [ 'https://registry.npmjs.org/ldf-client/-/ldf-client-1.3.2.tgz',
+37 verbose addRemoteTarball   '39d6b005efb4abb0d9ca21aea2b5a8a6608ad3fc' ]
+38 info retry fetch attempt 1 at 23:28:32
+39 verbose fetch to= /tmp/npm-14238-H6zvuZJf/registry.npmjs.org/ldf-client/-/ldf-client-1.3.2.tgz
+40 http GET https://registry.npmjs.org/ldf-client/-/ldf-client-1.3.2.tgz
+41 http 200 https://registry.npmjs.org/ldf-client/-/ldf-client-1.3.2.tgz
+42 silly lockFile e6885f08--ldf-client-ldf-client-1-3-2-tgz https://registry.npmjs.org/ldf-client/-/ldf-client-1.3.2.tgz
+43 silly lockFile e6885f08--ldf-client-ldf-client-1-3-2-tgz https://registry.npmjs.org/ldf-client/-/ldf-client-1.3.2.tgz
+44 silly lockFile c6b6e9f1-ldf-client-1-3-2 ldf-client@1.3.2
+45 silly lockFile c6b6e9f1-ldf-client-1-3-2 ldf-client@1.3.2
+46 silly lockFile 2ea2ea15-ldf-client ldf-client@
+47 silly lockFile 2ea2ea15-ldf-client ldf-client@
+48 error Error: EACCES, mkdir '/home/olaf/.npm/ldf-client/1.3.2'
+48 error  { [Error: EACCES, mkdir '/home/olaf/.npm/ldf-client/1.3.2']
+48 error   errno: 3,
+48 error   code: 'EACCES',
+48 error   path: '/home/olaf/.npm/ldf-client/1.3.2' }
+49 error Please try running this command again as root/Administrator.
+50 error System Linux 3.2.0-101-generic
+51 error command "/usr/bin/node" "/usr/bin/npm" "install" "-g" "ldf-client"
+52 error cwd /home/olaf/AdditionalSoftware/src/tpf_evaluation/Client.js
+53 error node -v v0.10.37
+54 error npm -v 1.4.28
+55 error path /home/olaf/.npm/ldf-client/1.3.2
+56 error code EACCES
+57 error errno 3
+58 error stack Error: EACCES, mkdir '/home/olaf/.npm/ldf-client/1.3.2'
+59 verbose exit [ 3, true ]
