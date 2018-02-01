@@ -11,6 +11,7 @@ if (args.listformats)
 if (!(args.q || args.f) && args._.length < 1 || args._.length > 2 || args.h || args.help) {
   console.error('usage: brTPF-client-eval [startFragment] query.sparql [-c config.json] ' +
                                           '[-t application/json] [-l logLevel] [--help]' +
+                                          '[--threshold w]' + // Added for the hybrid SPARQL engine
                                           '[--maxNumberOfMappings x]' + '[--outputFileNumber y]' );
   console.error('       brTPF-client-eval --listformats (Lists supported result formats for -t)');
   return process.exit(1);
@@ -29,6 +30,9 @@ var configFile = args.c ? args.c : path.join(__dirname, '../config-default.json'
     startFragment = args._.pop() || config.startFragment,
     query = args.q || (args.f || fs.existsSync(queryFile) ? fs.readFileSync(queryFile, 'utf8') : queryFile),
     mimeType = args.t || 'application/json';
+
+// Added for the hybrid SPARQL engine
+config.threshold = args.threshold ? args.threshold : 100;
 
 config.maxNumberOfMappings = args.maxNumberOfMappings ? args.maxNumberOfMappings : 10
 
