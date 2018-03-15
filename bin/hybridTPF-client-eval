@@ -61,7 +61,7 @@ setTimeout( function () {
   DEBUGhttp = config.fragmentsClient._httpClient.DEBUGcalls;
   DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
   DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
-  seDEBUGcalls = config.fragmentsClient._numberOfSPARQLEndpointCalls;
+  seDEBUGcalls = config.fragmentsClient._sparqlEndpointClient._numberOfSPARQLEndpointCalls;
   seDEBUGdata = config.fragmentsClient._numberOfTTFromSPARQLEndpoint;
   fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGdata, DEBUGtotal, seDEBUGcalls, seDEBUGdata, 'TIMEOUT', timeoutInMins].join(',') + '\n');
   fs.appendFileSync(measurementsFile2, queryFile + ',' + messageForMeasurementsFile2(config.fragmentsClient._chunkSizeCounters) + ',TIMEOUT,' + timeoutInMins + '\n');
@@ -106,7 +106,7 @@ try {
     DEBUGhttp = config.fragmentsClient._httpClient.DEBUGcalls;
     DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
     DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
-    seDEBUGcalls = config.fragmentsClient._numberOfSPARQLEndpointCalls;
+    seDEBUGcalls = config.fragmentsClient._sparqlEndpointClient._numberOfSPARQLEndpointCalls;
     seDEBUGdata = config.fragmentsClient._numberOfTTFromSPARQLEndpoint;
     fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGdata, DEBUGtotal, seDEBUGcalls, seDEBUGdata, 'ERROR', error].join(',') + '\n');
     fs.appendFileSync(measurementsFile2, queryFile + ',' + messageForMeasurementsFile2(config.fragmentsClient._chunkSizeCounters) + '\n');
@@ -118,7 +118,7 @@ try {
     DEBUGhttp = config.fragmentsClient._httpClient.DEBUGcalls;
     DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
     DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
-    seDEBUGcalls = config.fragmentsClient._numberOfSPARQLEndpointCalls;
+    seDEBUGcalls = config.fragmentsClient._sparqlEndpointClient._numberOfSPARQLEndpointCalls;
     seDEBUGdata = config.fragmentsClient._numberOfTTFromSPARQLEndpoint;
     fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGdata, DEBUGtotal, seDEBUGcalls, seDEBUGdata].join(',') + '\n');
     fs.appendFileSync(measurementsFile2, queryFile + ',' + messageForMeasurementsFile2(config.fragmentsClient._chunkSizeCounters) + '\n');
