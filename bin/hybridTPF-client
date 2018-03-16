@@ -12,7 +12,7 @@ if (!(args.q || args.f) && args._.length < 1 || args._.length > 2 || args.h || 
   console.error('usage: hybridTPF-client [startFragment] query.sparql [-c config.json] ' +
                                           '[-t application/json] [-l logLevel] [--help]' +
                                           '[--threshold w]' + // Added for the hybrid SPARQL engine
-                                          '[--maxNumberOfMappings x]' );
+                                          '[--maxNumberOfMappings x] [--endpointUrl z]' );
   console.error('       hybridTPF-client --listformats (Lists supported result formats for -t)');
   return process.exit(1);
 }
@@ -33,7 +33,7 @@ var configFile = args.c ? args.c : path.join(__dirname, '../config-default.json'
 
 // Added for the hybrid SPARQL engine
 config.threshold = args.threshold ? args.threshold : 100;
-
+config.endpointUrl = args.endpointUrl ? args.endpointUrl : 'http://172.19.2.100:8891/sparql?default-graph-uri=http%3A%2F%2Fdbpedia&query=';
 config.maxNumberOfMappings = args.maxNumberOfMappings ? args.maxNumberOfMappings : 10
 
 // Configure logging
