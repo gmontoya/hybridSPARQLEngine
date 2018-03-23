@@ -11,7 +11,7 @@ if (args.listformats)
 if (!(args.q || args.f) && args._.length < 1 || args._.length > 2 || args.h || args.help) {
   console.error('usage: hybridTPF-client-eval [startFragment] query.sparql [-c config.json] ' +
                                           '[-t application/json] [-l logLevel] [--help]' +
-                                          '[--threshold w]' + // Added for the hybrid SPARQL engine
+                                          '[--threshold w] [--endpointUrl z]' + // Added for the hybrid SPARQL engine
                                           '[--maxNumberOfMappings x]' + '[--outputFileNumber y]' );
   console.error('       hybridTPF-client-eval --listformats (Lists supported result formats for -t)');
   return process.exit(1);
@@ -32,7 +32,8 @@ var configFile = args.c ? args.c : path.join(__dirname, '../config-default.json'
     mimeType = args.t || 'application/json';
 
 // Added for the hybrid SPARQL engine
-config.threshold = args.threshold ? args.threshold : 100;
+config.threshold = args.threshold ? args.threshold : (config.threshold ? config.threshold : 100);
+config.endpointUrl = args.endpointUrl ? args.endpointUrl : (config.endpointUrl ? config.endpointUrl : 'http://172.19.2.100:8891/sparql?default-graph-uri=http%3A%2F%2Fdbpedia&query=');
 
 config.maxNumberOfMappings = args.maxNumberOfMappings ? args.maxNumberOfMappings : 10
 
@@ -63,6 +64,8 @@ setTimeout( function () {
   DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
   seDEBUGcalls = config.fragmentsClient._sparqlEndpointClient._numberOfSPARQLEndpointCalls;
   seDEBUGdata = config.fragmentsClient._numberOfTTFromSPARQLEndpoint;
+  console.log('seDEBUGcalls: '+seDEBUGcalls);
+  console.log('seDEBUGdata: '+seDEBUGdata);
   fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGdata, DEBUGtotal, seDEBUGcalls, seDEBUGdata, 'TIMEOUT', timeoutInMins].join(',') + '\n');
   fs.appendFileSync(measurementsFile2, queryFile + ',' + messageForMeasurementsFile2(config.fragmentsClient._chunkSizeCounters) + ',TIMEOUT,' + timeoutInMins + '\n');
   process.exit();
