@@ -32,10 +32,11 @@ var configFile = args.c ? args.c : path.join(__dirname, '../config-default.json'
     mimeType = args.t || 'application/json';
 
 // Added for the hybrid SPARQL engine
-config.threshold = args.threshold ? args.threshold : (config.threshold ? config.threshold : 100);
+var defaultThreshold = 9;
+config.threshold = args.threshold ? args.threshold : (config.threshold ? config.threshold : defaultThreshold);
 config.endpointUrl = args.endpointUrl ? args.endpointUrl : (config.endpointUrl ? config.endpointUrl : 'http://172.19.2.100:8891/sparql?default-graph-uri=http%3A%2F%2Fdbpedia&query=');
 
-config.maxNumberOfMappings = args.maxNumberOfMappings ? args.maxNumberOfMappings : 10
+config.maxNumberOfMappings = args.maxNumberOfMappings ? args.maxNumberOfMappings : (config.maxNumberOfMappings ? config.maxNumberOfMappings : 10)
 
 // Configure logging
 var measurementsFile  = 'eval_hybridTPF_' + args.outputFileNumber + '.csv';
@@ -62,10 +63,10 @@ setTimeout( function () {
   DEBUGhttp = config.fragmentsClient._httpClient.DEBUGcalls;
   DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
   DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
-  seDEBUGcalls = config.fragmentsClient._sparqlEndpointClient._numberOfSPARQLEndpointCalls;
+  seDEBUGcalls = config.fragmentsClient._numberOfSPARQLEndpointCalls;
   seDEBUGdata = config.fragmentsClient._numberOfTTFromSPARQLEndpoint;
-  console.log('seDEBUGcalls: '+seDEBUGcalls);
-  console.log('seDEBUGdata: '+seDEBUGdata);
+  //fs.appendFileSync(measurementsFile, 'seDEBUGcalls: '+seDEBUGcalls);
+  //fs.appendFileSync(measurementsFile, 'seDEBUGdata: '+seDEBUGdata);
   fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGdata, DEBUGtotal, seDEBUGcalls, seDEBUGdata, 'TIMEOUT', timeoutInMins].join(',') + '\n');
   fs.appendFileSync(measurementsFile2, queryFile + ',' + messageForMeasurementsFile2(config.fragmentsClient._chunkSizeCounters) + ',TIMEOUT,' + timeoutInMins + '\n');
   process.exit();
@@ -109,8 +110,10 @@ try {
     DEBUGhttp = config.fragmentsClient._httpClient.DEBUGcalls;
     DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
     DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
-    seDEBUGcalls = config.fragmentsClient._sparqlEndpointClient._numberOfSPARQLEndpointCalls;
+    seDEBUGcalls = config.fragmentsClient._numberOfSPARQLEndpointCalls;
     seDEBUGdata = config.fragmentsClient._numberOfTTFromSPARQLEndpoint;
+    //fs.appendFileSync(measurementsFile, 'seDEBUGcalls: '+seDEBUGcalls);
+    //fs.appendFileSync(measurementsFile, 'seDEBUGdata: '+seDEBUGdata);
     fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGdata, DEBUGtotal, seDEBUGcalls, seDEBUGdata, 'ERROR', error].join(',') + '\n');
     fs.appendFileSync(measurementsFile2, queryFile + ',' + messageForMeasurementsFile2(config.fragmentsClient._chunkSizeCounters) + '\n');
     process.exit();
@@ -121,8 +124,11 @@ try {
     DEBUGhttp = config.fragmentsClient._httpClient.DEBUGcalls;
     DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
     DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
-    seDEBUGcalls = config.fragmentsClient._sparqlEndpointClient._numberOfSPARQLEndpointCalls;
+    seDEBUGcalls = config.fragmentsClient._numberOfSPARQLEndpointCalls;
     seDEBUGdata = config.fragmentsClient._numberOfTTFromSPARQLEndpoint;
+    //console.log('config.fragmentsClient._numberOfTTFromSPARQLEndpoint: '+config.fragmentsClient._numberOfTTFromSPARQLEndpoint); console.log('config.fragmentsClient._numberOfSPARQLEndpointCalls: '+config.fragmentsClient._numberOfSPARQLEndpointCalls);
+    //fs.appendFileSync(measurementsFile, 'seDEBUGcalls: '+seDEBUGcalls);
+    //fs.appendFileSync(measurementsFile, 'seDEBUGdata: '+seDEBUGdata);
     fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGdata, DEBUGtotal, seDEBUGcalls, seDEBUGdata].join(',') + '\n');
     fs.appendFileSync(measurementsFile2, queryFile + ',' + messageForMeasurementsFile2(config.fragmentsClient._chunkSizeCounters) + '\n');
     process.exit(0); //process.stdout.uncork(); //process.stdout.flush();

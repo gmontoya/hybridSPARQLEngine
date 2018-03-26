@@ -34,7 +34,7 @@ var configFile = args.c ? args.c : path.join(__dirname, '../config-default.json'
 // Added for the hybrid SPARQL engine
 config.threshold = args.threshold ? args.threshold : (config.threshold ? config.threshold : 100);
 config.endpointUrl = args.endpointUrl ? args.endpointUrl : (config.endpointUrl ? config.endpointUrl : 'http://172.19.2.100:8891/sparql?default-graph-uri=http%3A%2F%2Fdbpedia&query=');
-config.maxNumberOfMappings = args.maxNumberOfMappings ? args.maxNumberOfMappings : 10
+config.maxNumberOfMappings = args.maxNumberOfMappings ? args.maxNumberOfMappings : (config.maxNumberOfMappings ? config.maxNumberOfMappings : 10)
 
 // Configure logging
 Logger.setLevel(args.l || 'warning');
@@ -49,7 +49,7 @@ try {
   case 'SELECT':
     writer = new ldf.SparqlResultWriter(mimeType, sparqlIterator);
     writer.on('data', function (data) { process.stdout.write(data); });
-
+    //writer.on('end', function() { console.log('config.fragmentsClient._numberOfTTFromSPARQLEndpoint: '+config.fragmentsClient._numberOfTTFromSPARQLEndpoint); console.log('config.fragmentsClient._numberOfSPARQLEndpointCalls: '+config.fragmentsClient._numberOfSPARQLEndpointCalls); });
     break;
   // Write an RDF representation of all results
   case 'CONSTRUCT':
