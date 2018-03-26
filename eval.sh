@@ -24,7 +24,7 @@ fi
 for query in $3/*.rq
 do
 	echo $query
-	echo "$1 -c $2 $query"
+	echo "timeout ${timeoutMin}m ./bin/$1 -c $2 $query ${t} ${e} ${m}"
 	results=$(timeout ${timeoutMin}m ./bin/$1 -c $2 $query ${t} ${e} ${m})
 	echo "$results"
 done
