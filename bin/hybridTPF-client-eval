@@ -56,7 +56,7 @@ function messageForMeasurementsFile2( chunkSizeCounters ) {
 var start = new Date();
 var DEBUGfirstTime, DEBUGtime, DEBUGfirstHttp, DEBUGhttp, DEBUGdata, DEBUGtotal = 0, seDEBUGcalls, seDEBUGdata;
 
-var timeoutInMins = 5;
+var timeoutInMins = args.timeoutInMins ? args.timeoutInMins : (config.timeoutInMins ? config.timeoutInMins : 5);
 
 setTimeout( function () {
   DEBUGtime = new Date() - start;
