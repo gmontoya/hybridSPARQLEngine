@@ -32,7 +32,7 @@ var configFile = args.c ? args.c : path.join(__dirname, '../config-default.json'
     mimeType = args.t || 'application/json';
 
 // Added for the hybrid SPARQL engine
-var defaultThreshold = 9;
+var defaultThreshold = 100;
 config.threshold = args.threshold ? args.threshold : (config.threshold ? config.threshold : defaultThreshold);
 config.endpointUrl = args.endpointUrl ? args.endpointUrl : (config.endpointUrl ? config.endpointUrl : 'http://172.19.2.100:8891/sparql?default-graph-uri=http%3A%2F%2Fdbpedia&query=');
 
@@ -88,7 +88,7 @@ try {
         DEBUGfirstTime = new Date() - start;
         DEBUGfirstHttp = config.fragmentsClient._httpClient.DEBUGcalls;
       }
-//      process.stdout.write(data);
+      process.stdout.write(data);
     });
     break;
   // Write an RDF representation of all results
