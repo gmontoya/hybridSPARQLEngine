@@ -1,0 +1,137 @@
+#!/usr/bin/env node
+
+var SparqlEndpointIterator2 = require('../lib/hybridTPF/SparqlEndpointIterator2');
+var ldf = require('../hybridTPF-client');
+var ArrayToElementsIterator = require('../lib/hybridTPF/ArrayToElementsIterator');
+
+// Retrieve and check arguments
+var args = require('minimist')(process.argv.slice(2));
+if (args.listformats)
+  return Object.keys(ldf.SparqlResultWriter.writers).forEach(function (t) { console.log(t); });
+
+if (!args.q && args._.length < 1 || args._.length > 2 || args.h || args.help) {
+  console.error('usage: endpoint-client query.sparql ' +
+                                          '[-t application/json] [-l logLevel] [--help]' +
+                                          '[--maxNumberOfMappings x] [--outputFileNumber y]' +
+                                          '[--endpointUrl z]' );
+  console.error('       endpoint-client --listformats (Lists supported result formats for -t)');
+  return process.exit(1);
+}
+
+// Load main libraries (postponed as to here for speed)
+var fs = require('fs'),
+    path = require('path'),
+    N3 = require('n3'),
+    Logger = ldf.Logger
+    SparqlParser = require('sparqljs').Parser;
+
+// Parse and initialize configuration
+var configFile = args.c ? args.c : path.join(__dirname, '../config-default.json'),
+    config = JSON.parse(fs.readFileSync(configFile, { encoding: 'utf8' })),
+    queryFile = args.f || args.q || args._.pop(),
+    startFragment = args._.pop() || config.startFragment,
+    queryText = args.q || (args.f || fs.existsSync(queryFile) ? fs.readFileSync(queryFile, 'utf8') : queryFile),
+    mimeType = args.t || 'application/json';
+
+// Added for the hybrid SPARQL engine
+config.threshold = args.threshold ? args.threshold : (config.threshold ? config.threshold : 100);
+config.endpointUrl = args.endpointUrl ? args.endpointUrl : (config.endpointUrl ? config.endpointUrl : 'http://172.19.2.100:8891/sparql?default-graph-uri=http%3A%2F%2Fdbpedia&query=');
+config.maxNumberOfMappings = args.maxNumberOfMappings ? args.maxNumberOfMappings : (config.maxNumberOfMappings ? config.maxNumberOfMappings : 10)
+
+// Configure logging
+var measurementsFile  = 'eval_endpoint_' + args.outputFileNumber + '.csv';
+var measurementsFile2 = 'eval2_endpoint_' + args.outputFileNumber + '.csv';
+Logger.setLevel(args.l || 'warning');
+
+function messageForMeasurementsFile2( chunkSizeCounters ) {
+  var msg = ""
+  for ( var i = 0; i <= config.maxNumberOfMappings; i++ ) {
+    if ( chunkSizeCounters[i] === undefined || ! chunkSizeCounters[i] ) {
+      chunkSizeCounters[i] = 0;
+    }
+  }
+  return chunkSizeCounters.join(',');
+}
+
+var start = new Date();
+var DEBUGfirstTime, DEBUGtime, DEBUGfirstHttp, DEBUGhttp, DEBUGdata, DEBUGtotal = 0, seDEBUGcalls, seDEBUGdata;
+
+var timeoutInMins = args.timeoutInMins ? args.timeoutInMins : (config.timeoutInMins ? config.timeoutInMins : 5);
+
+setTimeout( function () {
+  DEBUGtime = new Date() - start;
+  DEBUGhttp = config.fragmentsClient._httpClient.DEBUGcalls;
+  DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
+  DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
+  seDEBUGcalls = config.fragmentsClient._numberOfSPARQLEndpointCalls;
+  seDEBUGdata = config.fragmentsClient._numberOfTTFromSPARQLEndpoint;
+  //fs.appendFileSync(measurementsFile, 'seDEBUGcalls: '+seDEBUGcalls);
+  //fs.appendFileSync(measurementsFile, 'seDEBUGdata: '+seDEBUGdata);
+  fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGdata, DEBUGtotal, seDEBUGcalls, seDEBUGdata, 'TIMEOUT', timeoutInMins].join(',') + '\n');
+  fs.appendFileSync(measurementsFile2, queryFile + ',' + messageForMeasurementsFile2(config.fragmentsClient._chunkSizeCounters) + ',TIMEOUT,' + timeoutInMins + '\n');
+  process.exit();
+}, timeoutInMins*60*1000 );
+// Configure logging
+Logger.setLevel(args.l || 'warning');
+var startIterator = Iterator.single({});
+config.fragmentsClient = new ldf.FragmentsClient(startFragment, config);
+
+try {
+    var sei = new SparqlEndpointIterator2(startIterator, queryText, config.maxNumberOfMappings, config);
+    var iter = new ArrayToElementsIterator(sei, config);
+    var writer = new ldf.SparqlResultWriter(mimeType, iter);
+    writer.on('data', function (data) {
+      if (data.length > 3)
+        DEBUGtotal++;
+      if (!DEBUGfirstTime && data.length > 3) {
+        DEBUGfirstTime = new Date() - start;
+        DEBUGfirstHttp = config.fragmentsClient._httpClient.DEBUGcalls;
+      }
+//      process.stdout.write(data);
+    });
+
+  // Report an error's stack trace
+  sei.on('error', function (error) {
+    console.error('ERROR: An error occured during query execution.\n');
+    console.error(error.stack);
+    DEBUGtime = new Date() - start;
+    DEBUGhttp = config.fragmentsClient._httpClient.DEBUGcalls;
+    DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
+    DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
+    seDEBUGcalls = config.fragmentsClient._numberOfSPARQLEndpointCalls;
+    seDEBUGdata = config.fragmentsClient._numberOfTTFromSPARQLEndpoint;
+    //fs.appendFileSync(measurementsFile, 'seDEBUGcalls: '+seDEBUGcalls);
+    //fs.appendFileSync(measurementsFile, 'seDEBUGdata: '+seDEBUGdata);
+    fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGdata, DEBUGtotal, seDEBUGcalls, seDEBUGdata, 'ERROR', error].join(',') + '\n');
+    fs.appendFileSync(measurementsFile2, queryFile + ',' + messageForMeasurementsFile2(config.fragmentsClient._chunkSizeCounters) + '\n');
+    process.exit();
+  });
+
+  writer.on('end', function () {
+    DEBUGtime = new Date() - start;
+    DEBUGhttp = config.fragmentsClient._httpClient.DEBUGcalls;
+    DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
+    DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
+    seDEBUGcalls = config.fragmentsClient._numberOfSPARQLEndpointCalls;
+    seDEBUGdata = config.fragmentsClient._numberOfTTFromSPARQLEndpoint;
+    //console.log('config.fragmentsClient._numberOfTTFromSPARQLEndpoint: '+config.fragmentsClient._numberOfTTFromSPARQLEndpoint); console.log('config.fragmentsClient._numberOfSPARQLEndpointCalls: '+config.fragmentsClient._numberOfSPARQLEndpointCalls);
+    //fs.appendFileSync(measurementsFile, 'seDEBUGcalls: '+seDEBUGcalls);
+    //fs.appendFileSync(measurementsFile, 'seDEBUGdata: '+seDEBUGdata);
+    fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGdata, DEBUGtotal, seDEBUGcalls, seDEBUGdata].join(',') + '\n');
+    fs.appendFileSync(measurementsFile2, queryFile + ',' + messageForMeasurementsFile2(config.fragmentsClient._chunkSizeCounters) + '\n');
+    process.exit(0); //process.stdout.uncork(); //process.stdout.flush();
+  });
+
+}
+// Report a synchronous error
+catch (error) {
+  console.error('ERROR: Query execution could not start.\n');
+  switch (error.name) {
+  case 'InvalidQueryError':
+  case 'UnsupportedQueryError':
+    console.error(error.message);
+    break;
+  default:
+    console.error(error.stack);
+  }
+}
