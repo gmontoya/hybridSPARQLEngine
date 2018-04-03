@@ -62,13 +62,15 @@ var timeoutInMins = args.timeoutInMins ? args.timeoutInMins : (config.timeoutInM
 setTimeout( function () {
   DEBUGtime = new Date() - start;
   DEBUGhttp = config.fragmentsClient._httpClient.DEBUGcalls;
+  DEBUGhttpTime = config.fragmentsClient._httpClient.DEBUGHTTPTime;
+  DEBUGhttpTimeEndpoint = config.fragmentsClient._HTTPTimeSE;
   DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
   DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
   seDEBUGcalls = config.fragmentsClient._numberOfSPARQLEndpointCalls;
   seDEBUGdata = config.fragmentsClient._numberOfTTFromSPARQLEndpoint;
   //fs.appendFileSync(measurementsFile, 'seDEBUGcalls: '+seDEBUGcalls);
   //fs.appendFileSync(measurementsFile, 'seDEBUGdata: '+seDEBUGdata);
-  fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGdata, DEBUGtotal, seDEBUGcalls, seDEBUGdata, 'TIMEOUT', timeoutInMins].join(',') + '\n');
+  fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGtotal, seDEBUGcalls, DEBUGhttpTimeEndpoint, seDEBUGdata, 'TIMEOUT', timeoutInMins].join(',') + '\n');
   fs.appendFileSync(measurementsFile2, queryFile + ',' + messageForMeasurementsFile2(config.fragmentsClient._chunkSizeCounters) + ',TIMEOUT,' + timeoutInMins + '\n');
   process.exit();
 }, timeoutInMins*60*1000 );
@@ -109,13 +111,15 @@ try {
     console.error(error.stack);
     DEBUGtime = new Date() - start;
     DEBUGhttp = config.fragmentsClient._httpClient.DEBUGcalls;
+    DEBUGhttpTime = config.fragmentsClient._httpClient.DEBUGHTTPTime;
+    DEBUGhttpTimeEndpoint = config.fragmentsClient._HTTPTimeSE;
     DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
     DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
     seDEBUGcalls = config.fragmentsClient._numberOfSPARQLEndpointCalls;
     seDEBUGdata = config.fragmentsClient._numberOfTTFromSPARQLEndpoint;
     //fs.appendFileSync(measurementsFile, 'seDEBUGcalls: '+seDEBUGcalls);
     //fs.appendFileSync(measurementsFile, 'seDEBUGdata: '+seDEBUGdata);
-    fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGdata, DEBUGtotal, seDEBUGcalls, seDEBUGdata, 'ERROR', error].join(',') + '\n');
+    fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGtotal, seDEBUGcalls, DEBUGhttpTimeEndpoint, seDEBUGdata, 'ERROR', error].join(',') + '\n');
     fs.appendFileSync(measurementsFile2, queryFile + ',' + messageForMeasurementsFile2(config.fragmentsClient._chunkSizeCounters) + '\n');
     process.exit();
   });
@@ -123,6 +127,8 @@ try {
   writer.on('end', function () {
     DEBUGtime = new Date() - start;
     DEBUGhttp = config.fragmentsClient._httpClient.DEBUGcalls;
+    DEBUGhttpTime = config.fragmentsClient._httpClient.DEBUGHTTPTime;
+    DEBUGhttpTimeEndpoint = config.fragmentsClient._HTTPTimeSE;
     DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
     DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
     seDEBUGcalls = config.fragmentsClient._numberOfSPARQLEndpointCalls;
@@ -130,7 +136,7 @@ try {
     //console.log('config.fragmentsClient._numberOfTTFromSPARQLEndpoint: '+config.fragmentsClient._numberOfTTFromSPARQLEndpoint); console.log('config.fragmentsClient._numberOfSPARQLEndpointCalls: '+config.fragmentsClient._numberOfSPARQLEndpointCalls);
     //fs.appendFileSync(measurementsFile, 'seDEBUGcalls: '+seDEBUGcalls);
     //fs.appendFileSync(measurementsFile, 'seDEBUGdata: '+seDEBUGdata);
-    fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGdata, DEBUGtotal, seDEBUGcalls, seDEBUGdata].join(',') + '\n');
+    fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGtotal, seDEBUGcalls, DEBUGhttpTimeEndpoint, seDEBUGdata].join(',') + '\n');
     fs.appendFileSync(measurementsFile2, queryFile + ',' + messageForMeasurementsFile2(config.fragmentsClient._chunkSizeCounters) + '\n');
     process.exit(0); //process.stdout.uncork(); //process.stdout.flush();
   });
