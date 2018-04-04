@@ -31,7 +31,7 @@ var configFile = args.c ? args.c : path.join(__dirname, '../config-default.json'
     mimeType = args.t || 'application/json';
 
 config.maxNumberOfMappings = args.maxNumberOfMappings ? args.maxNumberOfMappings : 10
-
+config.countBytes = 'false';
 // Configure logging
 Logger.setLevel(args.l || 'warning');
 

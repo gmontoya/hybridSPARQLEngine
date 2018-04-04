@@ -12,7 +12,7 @@ if (!(args.q || args.f) && args._.length < 1 || args._.length > 2 || args.h || 
   console.error('usage: hybridTPF-client-eval [startFragment] query.sparql [-c config.json] ' +
                                           '[-t application/json] [-l logLevel] [--help]' +
                                           '[--threshold w] [--endpointUrl z]' + // Added for the hybrid SPARQL engine
-                                          '[--maxNumberOfMappings x]' + '[--outputFileNumber y]' );
+                                          '[--maxNumberOfMappings x] [--countBytes v] [--outputFileNumber y]' );
   console.error('       hybridTPF-client-eval --listformats (Lists supported result formats for -t)');
   return process.exit(1);
 }
@@ -34,8 +34,9 @@ var configFile = args.c ? args.c : path.join(__dirname, '../config-default.json'
 // Added for the hybrid SPARQL engine
 var defaultThreshold = 100;
 config.threshold = args.threshold ? args.threshold : (config.threshold ? config.threshold : defaultThreshold);
-//config.endpointUrl = args.endpointUrl ? args.endpointUrl : (config.endpointUrl ? config.endpointUrl : 'http://172.19.2.100:8891/sparql?default-graph-uri=http%3A%2F%2Fdbpedia&query=');
-config.endpointUrl = args.endpointUrl ? args.endpointUrl : (config.endpointUrl ? config.endpointUrl : 'http://172.19.2.112:8890/sparql?default-graph-uri=http%3A%2F%2Fwatdiv10M&query=');
+config.countBytes = args.countBytes ? args.countBytes : (config.countBytes ? config.countBytes : 'false');
+config.endpointUrl = args.endpointUrl ? args.endpointUrl : (config.endpointUrl ? config.endpointUrl : 'http://172.19.2.100:8893/sparql?default-graph-uri=http%3A%2F%2Fdbpedia&query=');
+//config.endpointUrl = args.endpointUrl ? args.endpointUrl : (config.endpointUrl ? config.endpointUrl : 'http://172.19.2.112:8890/sparql?default-graph-uri=http%3A%2F%2Fwatdiv10M&query=');
 
 config.maxNumberOfMappings = args.maxNumberOfMappings ? args.maxNumberOfMappings : (config.maxNumberOfMappings ? config.maxNumberOfMappings : 10)
 
@@ -55,7 +56,7 @@ function messageForMeasurementsFile2( chunkSizeCounters ) {
 }
 
 var start = new Date();
-var DEBUGfirstTime, DEBUGtime, DEBUGfirstHttp, DEBUGhttp, DEBUGdata, DEBUGtotal = 0, seDEBUGcalls, seDEBUGdata;
+var DEBUGfirstTime, DEBUGtime, DEBUGfirstHttp, DEBUGhttp, DEBUGhttpTime, DEBUGhttpTimeEndpoint, DEBUGdata, DEBUGdataBytes, DEBUGtotal = 0, seDEBUGcalls, seDEBUGdata, seDEBUGdataBytes;
 
 var timeoutInMins = args.timeoutInMins ? args.timeoutInMins : (config.timeoutInMins ? config.timeoutInMins : 5);
 
@@ -66,11 +67,13 @@ setTimeout( function () {
   DEBUGhttpTimeEndpoint = config.fragmentsClient._HTTPTimeSE;
   DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
   DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
+  DEBUGdataBytes = config.fragmentsClient._overallReceivedBytesTPFServer;
   seDEBUGcalls = config.fragmentsClient._numberOfSPARQLEndpointCalls;
   seDEBUGdata = config.fragmentsClient._numberOfTTFromSPARQLEndpoint;
+  seDEBUGdataBytes = config.fragmentsClient._overallReceivedBytesEndpoint;
   //fs.appendFileSync(measurementsFile, 'seDEBUGcalls: '+seDEBUGcalls);
   //fs.appendFileSync(measurementsFile, 'seDEBUGdata: '+seDEBUGdata);
-  fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGtotal, seDEBUGcalls, DEBUGhttpTimeEndpoint, seDEBUGdata, 'TIMEOUT', timeoutInMins].join(',') + '\n');
+  fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGdataBytes, DEBUGtotal, seDEBUGcalls, DEBUGhttpTimeEndpoint, seDEBUGdata, seDEBUGdataBytes, 'TIMEOUT', timeoutInMins].join(',') + '\n');
   fs.appendFileSync(measurementsFile2, queryFile + ',' + messageForMeasurementsFile2(config.fragmentsClient._chunkSizeCounters) + ',TIMEOUT,' + timeoutInMins + '\n');
   process.exit();
 }, timeoutInMins*60*1000 );
@@ -115,11 +118,13 @@ try {
     DEBUGhttpTimeEndpoint = config.fragmentsClient._HTTPTimeSE;
     DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
     DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
+    DEBUGdataBytes = config.fragmentsClient._overallReceivedBytesTPFServer;
     seDEBUGcalls = config.fragmentsClient._numberOfSPARQLEndpointCalls;
     seDEBUGdata = config.fragmentsClient._numberOfTTFromSPARQLEndpoint;
+    seDEBUGdataBytes = config.fragmentsClient._overallReceivedBytesEndpoint;
     //fs.appendFileSync(measurementsFile, 'seDEBUGcalls: '+seDEBUGcalls);
     //fs.appendFileSync(measurementsFile, 'seDEBUGdata: '+seDEBUGdata);
-    fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGtotal, seDEBUGcalls, DEBUGhttpTimeEndpoint, seDEBUGdata, 'ERROR', error].join(',') + '\n');
+    fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGdataBytes, DEBUGtotal, seDEBUGcalls, DEBUGhttpTimeEndpoint, seDEBUGdata, seDEBUGdataBytes, 'ERROR', error].join(',') + '\n');
     fs.appendFileSync(measurementsFile2, queryFile + ',' + messageForMeasurementsFile2(config.fragmentsClient._chunkSizeCounters) + '\n');
     process.exit();
   });
@@ -131,12 +136,14 @@ try {
     DEBUGhttpTimeEndpoint = config.fragmentsClient._HTTPTimeSE;
     DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
     DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
+    DEBUGdataBytes = config.fragmentsClient._overallReceivedBytesTPFServer;
     seDEBUGcalls = config.fragmentsClient._numberOfSPARQLEndpointCalls;
     seDEBUGdata = config.fragmentsClient._numberOfTTFromSPARQLEndpoint;
+    seDEBUGdataBytes = config.fragmentsClient._overallReceivedBytesEndpoint;
     //console.log('config.fragmentsClient._numberOfTTFromSPARQLEndpoint: '+config.fragmentsClient._numberOfTTFromSPARQLEndpoint); console.log('config.fragmentsClient._numberOfSPARQLEndpointCalls: '+config.fragmentsClient._numberOfSPARQLEndpointCalls);
     //fs.appendFileSync(measurementsFile, 'seDEBUGcalls: '+seDEBUGcalls);
     //fs.appendFileSync(measurementsFile, 'seDEBUGdata: '+seDEBUGdata);
-    fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGtotal, seDEBUGcalls, DEBUGhttpTimeEndpoint, seDEBUGdata].join(',') + '\n');
+    fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGdataBytes, DEBUGtotal, seDEBUGcalls, DEBUGhttpTimeEndpoint, seDEBUGdata, seDEBUGdataBytes].join(',') + '\n');
     fs.appendFileSync(measurementsFile2, queryFile + ',' + messageForMeasurementsFile2(config.fragmentsClient._chunkSizeCounters) + '\n');
     process.exit(0); //process.stdout.uncork(); //process.stdout.flush();
   });

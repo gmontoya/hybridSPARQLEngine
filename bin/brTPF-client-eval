@@ -11,7 +11,7 @@ if (args.listformats)
 if (!(args.q || args.f) && args._.length < 1 || args._.length > 2 || args.h || args.help) {
   console.error('usage: brTPF-client-eval [startFragment] query.sparql [-c config.json] ' +
                                           '[-t application/json] [-l logLevel] [--help]' +
-                                          '[--maxNumberOfMappings x]' + '[--outputFileNumber y]' );
+                                          '[--maxNumberOfMappings x] [--countBytes v] [--outputFileNumber y]' );
   console.error('       brTPF-client-eval --listformats (Lists supported result formats for -t)');
   return process.exit(1);
 }
@@ -31,7 +31,7 @@ var configFile = args.c ? args.c : path.join(__dirname, '../config-default.json'
     mimeType = args.t || 'application/json';
 
 config.maxNumberOfMappings = args.maxNumberOfMappings ? args.maxNumberOfMappings : 10
-
+config.countBytes = args.countBytes ? args.countBytes : (config.countBytes ? config.countBytes : 'false');
 // Configure logging
 var measurementsFile  = 'eval_brTPF_' + args.outputFileNumber + '.csv';
 var measurementsFile2 = 'eval2_brTPF_' + args.outputFileNumber + '.csv';
@@ -48,7 +48,7 @@ function messageForMeasurementsFile2( chunkSizeCounters ) {
 }
 
 var start = new Date();
-var DEBUGfirstTime, DEBUGtime, DEBUGfirstHttp, DEBUGhttp, DEBUGdata, DEBUGtotal = 0;
+var DEBUGfirstTime, DEBUGtime, DEBUGfirstHttp, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGdataBytes, DEBUGtotal = 0;
 
 var timeoutInMins = args.timeoutInMins ? args.timeoutInMins : (config.timeoutInMins ? config.timeoutInMins : 5);
 
@@ -58,7 +58,8 @@ setTimeout( function () {
   DEBUGhttpTime = config.fragmentsClient._httpClient.DEBUGHTTPTime;
   DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
   DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
-  fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGtotal, 'TIMEOUT', timeoutInMins].join(',') + '\n');
+  DEBUGdataBytes = config.fragmentsClient._overallReceivedBytesTPFServer;
+  fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGdataBytes, DEBUGtotal, 'TIMEOUT', timeoutInMins].join(',') + '\n');
   fs.appendFileSync(measurementsFile2, queryFile + ',' + messageForMeasurementsFile2(config.fragmentsClient._chunkSizeCounters) + ',TIMEOUT,' + timeoutInMins + '\n');
   process.exit();
 }, timeoutInMins*60*1000 );
@@ -102,7 +103,8 @@ try {
     DEBUGhttpTime = config.fragmentsClient._httpClient.DEBUGHTTPTime;
     DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
     DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
-    fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGtotal, 'ERROR', error].join(',') + '\n');
+    DEBUGdataBytes = config.fragmentsClient._overallReceivedBytesTPFServer;
+    fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGdataBytes, DEBUGtotal, 'ERROR', error].join(',') + '\n');
     fs.appendFileSync(measurementsFile2, queryFile + ',' + messageForMeasurementsFile2(config.fragmentsClient._chunkSizeCounters) + '\n');
     process.exit();
   });
@@ -113,7 +115,8 @@ try {
     DEBUGhttpTime = config.fragmentsClient._httpClient.DEBUGHTTPTime;
     DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
     DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
-    fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGtotal].join(',') + '\n');
+    DEBUGdataBytes = config.fragmentsClient._overallReceivedBytesTPFServer;
+    fs.appendFileSync(measurementsFile, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGdataBytes, DEBUGtotal].join(',') + '\n');
     fs.appendFileSync(measurementsFile2, queryFile + ',' + messageForMeasurementsFile2(config.fragmentsClient._chunkSizeCounters) + '\n');
     process.exit(0); //process.stdout.uncork(); //process.stdout.flush();
   });
