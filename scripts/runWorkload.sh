@@ -5,6 +5,7 @@ k=$1
 s=$2
 a=$3
 n=$4
+c=$5
 
 cd /home/roott/Client.js-brTPF
 
@@ -12,7 +13,7 @@ cd /home/roott/Client.js-brTPF
 spids=""
 
 for i in `seq 1 ${n}`; do
-    ./eval.sh ${s} /home/roott/Client.js-brTPF/config.json ${folder}_${k} 5 30 30 ${k} > outputEvalWatdiv10M_${s}_${a}_${k} &
+    ./eval.sh ${s} /home/roott/Client.js-brTPF/config.json ${folder}_${k} 5 30 30 ${k} ${c} > outputEvalWatdiv10M_${s}_${a}_${k}_${c} &
     pid=$!
     spids="$spids $pid"
     k=$(($k+193))

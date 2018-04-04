@@ -5,13 +5,14 @@ k=$1
 s=$2
 a=$3
 n=$4
+c=$5
 
 cd /home/roott/Client.js-brTPF
 
 #sleep 1s
 spids=""
 for i in `seq 1 ${n}`; do
-    ./eval.sh ${s} /home/roott/Client.js-brTPF/configDBpedia201604.json ${folder} 5 30 30 ${k} > outputEvalDBpedia_${s}_${a}_${k} &
+    ./eval.sh ${s} /home/roott/Client.js-brTPF/configDBpedia201604.json ${folder} 5 30 30 ${k} ${c} > outputEvalDBpedia_${s}_${a}_${k}_${c} &
     pid=$!
     spids="$spids $pid"
     k=$(($k+1))
