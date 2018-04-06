@@ -1,16 +1,24 @@
 #!/bin/bash
 
-folder=/home/roott/watdiv_queries/watdiv_queries
+folder=/home/roott/Client.js-brTPF/queries/more
 k=$1
 a=$2
+n=$3
 
 cd /home/roott/Client.js-brTPF/scripts
 
 #sleep 1s
 
-for i in `seq 1 8`; do
-    ./evalUsingEndpoint.sh ${folder}_${k} http://172.19.2.112:8890/sparql 5 > outputEvalEndpointWatdiv10M_${a}_${k} &
-    k=$(($k+193))
+spids=""
+for i in `seq 1 ${n}`; do
+    ./evalUsingEndpoint.sh ${folder} http://172.19.2.100:8893/sparql 5 > outputEvalEndpointDBpedia_${a}_${k}_${n}c &
+    pid=$!
+    spids="$spids $pid"
+    k=$(($k+1))
+done
+
+for e in $spids; do
+    wait $e
 done
 
 #date
