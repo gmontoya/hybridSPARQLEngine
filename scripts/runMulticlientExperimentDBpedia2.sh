@@ -11,7 +11,7 @@ b=0
 # number of clients per vm
 n=4
 # number of vms
-x=`wc -w <<< ${addresses}`
+x=${#addresses[@]}
 y=$(($x-1))
 # number of clients in the setup
 s=$(($x*$n))
@@ -34,14 +34,14 @@ for t in ${techniques}; do
     b=$(($b+1))
   done
 
-  for e in $spids; do
-    wait $e
+  for i in $spids; do
+    wait $i
   done
 done
 
 for t in ${techniques}; do
   rm ${resultsFolder}/res_${t}_${e}.csv
-  for l in `0 ${u}`; do
+  for l in `seq 0 ${u}`; do
     i=$(($l % 4))
     a=${addresses[$i]}
 
@@ -50,3 +50,4 @@ for t in ${techniques}; do
   done
   ./processOutput.sh ${resultsFolder}/res_${t}_${e}.csv
 done
+
