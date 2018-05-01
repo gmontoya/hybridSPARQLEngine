@@ -1,15 +1,18 @@
 #!/bin/bash
 
 #s=$1
-techniques="brTPF endpoint"
-declare -a addresses=("172.19.2.115" "172.19.2.107" "172.19.2.118" "172.19.2.111")
+techniques="brTPF"
+#"brTPF hybrid endpoint"
+#declare -a addresses=("172.19.2.115" "172.19.2.107" "172.19.2.118" "172.19.2.111")
+declare -a addresses=("172.19.2.115")
 
 resultsFolder=/home/roott/tmp/resultsTmp
 
 # initial id
 b=0
 # number of clients per vm
-n=4
+n=1
+#4
 # number of vms
 x=${#addresses[@]}
 y=$(($x-1))

@@ -1,2 +1,3 @@
 #rm /home/roott/Client.js-brTPF/outputEvalWatdiv10M_*
-rm /home/roott/Client.js-brTPF/nohup.out
+t=$1
+rm /home/roott/Client.js-brTPF/eval_${t}_*.csv
