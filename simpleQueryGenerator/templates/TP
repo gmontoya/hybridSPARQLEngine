@@ -1,0 +1,6 @@
+prefix dbo: <http://dbpedia.org/ontology/>
+
+SELECT DISTINCT * WHERE {
+  ?v1 dbo:birthPlace ?k .
+}
+

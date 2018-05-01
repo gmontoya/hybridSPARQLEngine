@@ -1,0 +1,10 @@
+prefix dbp: <http://dbpedia.org/property/>
+prefix dbo: <http://dbpedia.org/ontology/>
+
+SELECT DISTINCT * WHERE {
+  ?v1 dbp:isCitedBy ?v2 .
+  ?v2 dbp:author ?v3 .
+  ?v3 dbo:nationality ?v4 .
+  ?v4 <http://www.w3.org/2002/07/owl#sameAs> ?k
+}
+
