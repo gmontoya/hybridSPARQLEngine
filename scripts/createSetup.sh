@@ -16,7 +16,7 @@ for i in `seq 0 4`; do
        l=$(($k % 16))
        dir=$prefixFolder$l
        [[ -d "$dir" ]] || mkdir "$dir"
-       cp ${srcFolder}/query_${t}_${min}_${max}_${k} ${dir}/
+       cp ${srcFolder}/query_${t}_${min}_${max}_${k} ${dir}/query_${t}_${min}_${max}_${k}.rq
      done
   done
 done
