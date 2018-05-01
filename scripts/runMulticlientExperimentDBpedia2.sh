@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #s=$1
-techniques="brTPF"
-#"brTPF hybrid endpoint"
-#declare -a addresses=("172.19.2.115" "172.19.2.107" "172.19.2.118" "172.19.2.111")
-declare -a addresses=("172.19.2.115")
+techniques="brTPF endpoint"
+#"brTPF hybridTPF endpoint"
+declare -a addresses=("172.19.2.115" "172.19.2.107" "172.19.2.118" "172.19.2.111")
+#declare -a addresses=("172.19.2.115")
 
 resultsFolder=/home/roott/tmp/resultsTmp
 

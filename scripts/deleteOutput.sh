@@ -1,3 +1,3 @@
 #rm /home/roott/Client.js-brTPF/outputEvalWatdiv10M_*
 t=$1
-rm /home/roott/Client.js-brTPF/eval_${t}_*.csv
+rm /home/roott/Client.js-brTPF/eval*_*_*.csv
