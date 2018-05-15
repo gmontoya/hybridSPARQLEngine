@@ -36,8 +36,8 @@ var configFile = args.c ? args.c : path.join(__dirname, '../config-default.json'
 // Added for the hybrid SPARQL engine
 config.threshold = args.threshold ? args.threshold : (config.threshold ? config.threshold : 100);
 config.countBytes = args.countBytes ? args.countBytes : (config.countBytes ? config.countBytes : 'false');
-//config.endpointUrl = args.endpointUrl ? args.endpointUrl : (config.endpointUrl ? config.endpointUrl : 'http://172.19.2.112:8890/sparql?default-graph-uri=http%3A%2F%2Fwatdiv10M&query=');
-config.endpointUrl = args.endpointUrl ? args.endpointUrl : (config.endpointUrl ? config.endpointUrl : 'http://172.19.2.100:8893/sparql?default-graph-uri=http%3A%2F%2Fdbpedia&query=');
+config.endpointUrl = args.endpointUrl ? args.endpointUrl : (config.endpointUrl ? config.endpointUrl : 'http://172.19.2.112:8890/sparql?default-graph-uri=http%3A%2F%2Fwatdiv10M&query=');
+//config.endpointUrl = args.endpointUrl ? args.endpointUrl : (config.endpointUrl ? config.endpointUrl : 'http://172.19.2.100:8893/sparql?default-graph-uri=http%3A%2F%2Fdbpedia&query=');
 config.maxNumberOfMappings = args.maxNumberOfMappings ? args.maxNumberOfMappings : (config.maxNumberOfMappings ? config.maxNumberOfMappings : 10)
 
 // Configure logging
@@ -93,7 +93,7 @@ try {
         DEBUGfirstTime = new Date() - start;
         DEBUGfirstHttp = config.fragmentsClient._httpClient.DEBUGcalls;
       }
-//      process.stdout.write(data);
+      process.stdout.write(data);
     });
 
   // Report an error's stack trace
