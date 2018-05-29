@@ -1,6 +1,7 @@
 #!/bin/bash
 
-folder=/home/roott/data/watDiv/queries
+##folder=/home/roott/watdiv_queries/results
+folder=/home/roott/watDivQueries
 # initial id
 k=$1
 # number of vms; step between local ids
@@ -12,15 +13,16 @@ n=$3
 c=$4
 max=5
 t=5
-cd /home/roott/vm11/Client.js-brTPF
-
+##cd /home/roott/brTPF/Client.js-brTPF
+cd /home/roott/Client.js-brTPF
 #sleep 1s
 spids=""
 for i in `seq 1 ${n}`; do
-    echo "./eval.sh ${s} /home/roott/brTPF/Client.js-brTPF/config.json ${folder}/client_${k} ${t} 30 30 ${k} ${c} "http://172.19.2.100:8895/sparql?default-graph-uri=http%3A%2F%2FwatdivEndpoint&query=" ${max} > outputEvalWatDivTest_${s}_${k}_${c} &"
+    echo "./eval.sh ${s} /home/roott/Client.js-brTPF/config.json ${folder}/client_${k} ${t} 30 30 ${k} ${c} "http://172.19.2.112:8890/sparql?default-graph-uri=http%3A%2F%2Fwatdiv10M&query=" ${max} > outputEvalWatDivTest_${s}_${k}_${c} &"
+    ./eval.sh ${s} /home/roott/Client.js-brTPF/config.json ${folder}/client_${k} ${t} 30 30 ${k} ${c} "http://172.19.2.112:8890/sparql?default-graph-uri=http%3A%2F%2Fwatdiv10M&query=" ${max} > outputEvalWatDivTest_${s}_${k}_${c} &
     pid=$!
     spids="$spids $pid"
-    k=$(($k+1))
+    k=$(($k+4))
 done
 
 for e in $spids; do
