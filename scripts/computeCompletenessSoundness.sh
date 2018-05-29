@@ -33,5 +33,5 @@ else
   fi
 fi
 
-echo "$c,$s"
+echo "$c $s"
 
