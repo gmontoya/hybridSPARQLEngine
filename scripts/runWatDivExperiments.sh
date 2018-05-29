@@ -1,43 +1,47 @@
 #!/bin/bash
 
-techniques=$1
+# initial vm id
+ii=$1
+# number of vms
+nvms=$2
+# initial client id
+k=${ii}
+techniques=$3
+threshold=$4
+# number of clients per vm
+n=$5
+resultsFolder=$6
+# count bytes? (true or false)
+c=$7
+# maximum number of queries to execute, -1 to execute all of them
+m=$8
+# timeout in minutes
+o=$9
+
 #techniques="brTPF endpoint"
 #techniques="endpoint"
-#declare -a addresses=("172.19.2.115" "172.19.2.107" "172.19.2.118" "172.19.2.111")
-#declare -a addresses=("172.19.2.107")
-threshold=$2
-
-resultsFolder=$4
-#resultsFolder=/home/roott/tmp/resultsWatDiv
+declare -a all=("172.19.2.115" "172.19.2.107" "172.19.2.118" "172.19.2.111")
+addresses=("${all[@]:${ii}:${nvms}}")
 
 # maximum number of vms, step between clients in the same vm
-mn=4
+mn=${#all[@]}
 
-# initial id
-b=1
-# number of clients per vm
-n=$3
-#4
 # number of vms
 x=${#addresses[@]}
 y=$(($x-1))
 # number of clients in the setup
 s=$(($x*$n))
 u=$(($s-1))
-# save the initial id for processing the output
-k=${b}
-# count bytes? (true or false)
-c=$5
 # label for the results of this experiment
 e=${s}c_${c}
 
 for t in ${techniques}; do
   spids=""
-  #b=0
+  b=$k
   for i in `seq 0 ${y}`; do
     a=${addresses[$i]}
     echo "running ${t} experiments on ${a}"
-    ssh roott@${a} 'bash -s' < runWorkloadWatDiv.sh ${b} ${mn} ${t}-client-eval ${a} ${n} ${c} ${threshold} ${t}  > outputRunWorkloadWatDiv_${t}_${a}_${b}_${c} &
+    ssh roott@${a} 'bash -s' < runWorkloadWatDiv.sh ${b} ${mn} ${t} ${a} ${n} ${c} ${threshold} ${m} ${o} > outputRunWorkloadWatDiv_${t}_${a}_${b}_${c} &
     pid=$!
     spids="$spids $pid"
     b=$(($b+1))

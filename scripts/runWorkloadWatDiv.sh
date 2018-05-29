@@ -5,22 +5,25 @@ folder=/home/roott/watDivQueries
 k=$1
 # number of vms; step between local ids
 x=$2
-s=$3
+# technique
+h=${3}
+s=${h}-client-eval
 a=$4
 # number of clients per vm
 n=$5
 c=$6
 t=$7
 e="http://172.19.2.112:8890/sparql?default-graph-uri=http%3A%2F%2Fwatdiv10M&query="
-m=-1
+m=$8
+o=$9
 
 cd /home/roott/Client.js-brTPF
 
 #sleep 1s
 spids=""
 for i in `seq 1 ${n}`; do
-    rm /home/roott/Client.js-brTPF/eval_$8_${k}.csv
-    ./eval.sh ${s} /home/roott/Client.js-brTPF/config.json ${folder}/client_${k} 5 30 ${t} ${k} ${c} ${e} ${m} > outputEvalWatDiv_${s}_${a}_${k}_${c} &
+    rm /home/roott/Client.js-brTPF/eval_${h}_${k}.csv
+    ./eval.sh ${s} /home/roott/Client.js-brTPF/config.json ${folder}/client_${k} ${o} 30 ${t} ${k} ${c} ${e} ${m} > outputEvalWatDiv_${s}_${a}_${k}_${c} &
     pid=$!
     spids="$spids $pid"
     k=$(($k+$x))
