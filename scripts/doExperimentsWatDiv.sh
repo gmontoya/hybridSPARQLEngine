@@ -1,14 +1,14 @@
 #!/bin/bash
 
-ts="25 50"
+ts="50"
 ii=0
-nvms=4
+nvms=2
 # number of clients per vm
-n=4
+n=2
 # total number of clients in the setup
 nc=$((${nvms}*${n}))
-resultsFolder=/home/roott/tmp/resultsHybrid_WatDiv_${nc}c
-c=false
+c=true
+resultsFolder=/home/roott/tmp/resultsHybrid_WatDiv_${nc}c_${c}
 # maximum number of queries to execute, -1 to execute all of them
 m=5
 # timeout in minutes
