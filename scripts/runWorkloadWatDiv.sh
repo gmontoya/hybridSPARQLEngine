@@ -1,6 +1,6 @@
 #!/bin/bash
 
-folder=/home/roott/Client.js-brTPF/queries
+folder=/home/roott/watDivQueries
 # initial id
 k=$1
 # number of vms; step between local ids
@@ -10,13 +10,15 @@ a=$4
 # number of clients per vm
 n=$5
 c=$6
+e=""
 m=-1
+
 cd /home/roott/Client.js-brTPF
 
 #sleep 1s
 spids=""
 for i in `seq 1 ${n}`; do
-    ./eval.sh ${s} /home/roott/Client.js-brTPF/configDBpedia201504.json ${folder}/dbpedia201504_queries_${k} 5 30 30 ${k} ${c} "http://172.19.2.100:8894/sparql?default-graph-uri=http%3A%2F%2Fdbpedia201504Endpoint&query=" ${m} > outputEvalDBpedia_${s}_${a}_${k}_${c} &
+    ./eval.sh ${s} /home/roott/Client.js-brTPF/config.json ${folder}/client_${k} 5 30 30 ${k} ${c} "${e}" ${m} > outputEvalWatDiv_${s}_${a}_${k}_${c} &
     pid=$!
     spids="$spids $pid"
     k=$(($k+$x))
