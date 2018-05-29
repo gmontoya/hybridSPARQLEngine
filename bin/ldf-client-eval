@@ -68,7 +68,7 @@ try {
         DEBUGfirstTime = new Date() - start;
         DEBUGfirstHttp = config.fragmentsClient._httpClient.DEBUGcalls;
       }
-      process.stdout.write(data); //, () => {
+      //process.stdout.write(data); //, () => {
       //  console.log('The data has been flushed');
       //});
     });
