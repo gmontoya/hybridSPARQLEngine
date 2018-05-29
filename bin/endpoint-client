@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var SparqlEndpointIterator2 = require('../lib/hybridTPF/SparqlEndpointIterator2');
+var SparqlEndpointIterator = require('../lib/hybridTPF/SparqlEndpointIterator');
 var ArrayToElementsIterator = require('../lib/hybridTPF/ArrayToElementsIterator');
 var ldf = require('../hybridTPF-client');
 
@@ -44,7 +44,7 @@ Logger.setLevel(args.l || 'warning');
 var startIterator = Iterator.single({});
 config.fragmentsClient = new ldf.FragmentsClient(startFragment, config);
 try {
-    var sei = new SparqlEndpointIterator2(startIterator, queryText, config.maxNumberOfMappings, config);
+    var sei = new SparqlEndpointIterator(startIterator, queryText, config.maxNumberOfMappings, config);
     var iter = new ArrayToElementsIterator(sei, config); 
     var writer = new ldf.SparqlResultWriter(mimeType, iter);
     writer.on('data', function (data) { process.stdout.write(data); });

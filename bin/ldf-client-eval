@@ -29,21 +29,26 @@ var configFile = args.c ? args.c : path.join(__dirname, '../config-default.json'
     query = args.q || (args.f || fs.existsSync(queryFile) ? fs.readFileSync(queryFile, 'utf8') : queryFile),
     mimeType = args.t || 'application/json';
 
+config.countBytes = args.countBytes ? args.countBytes : (config.countBytes ? config.countBytes : 'false');
+
 // Configure logging
-var logname = 'eval_TPF_' + args.outputFileNumber + '.csv';
+var logname = 'eval_ldf_' + args.outputFileNumber + '.csv';
 Logger.setLevel(args.l || 'warning');
 
 var start = new Date();
-var DEBUGfirstTime, DEBUGtime, DEBUGfirstHttp, DEBUGhttp, DEBUGdata, DEBUGtotal = 0;
+var DEBUGfirstTime, DEBUGtime, DEBUGfirstHttp, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGdataBytes, DEBUGtotal = 0;
 
-var timeoutInMins = 5;
+var timeoutInMins = args.timeoutInMins ? args.timeoutInMins : (config.timeoutInMins ? config.timeoutInMins : 5);
+//var timeoutInMins = 5;
 
 setTimeout( function () {
   DEBUGtime = new Date() - start;
   DEBUGhttp = config.fragmentsClient._httpClient.DEBUGcalls;
   DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
   DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
-  fs.appendFileSync(logname, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGdata, DEBUGtotal, 'TIMEOUT', timeoutInMins].join(',') + '\n');
+  DEBUGhttpTime = config.fragmentsClient._httpClient.DEBUGHTTPTime;
+  DEBUGdataBytes = config.fragmentsClient._overallReceivedBytesTPFServer;
+  fs.appendFileSync(logname, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGdataBytes, DEBUGtotal, 'TIMEOUT', timeoutInMins].join(',') + '\n');
   process.exit();
 }, timeoutInMins*60*1000 );
 
@@ -63,7 +68,7 @@ try {
         DEBUGfirstTime = new Date() - start;
         DEBUGfirstHttp = config.fragmentsClient._httpClient.DEBUGcalls;
       }
-      //process.stdout.write(data); //, () => {
+      process.stdout.write(data); //, () => {
       //  console.log('The data has been flushed');
       //});
     });
@@ -87,7 +92,9 @@ try {
     DEBUGhttp = config.fragmentsClient._httpClient.DEBUGcalls;
     DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
     DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
-    fs.appendFileSync(logname, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGdata, DEBUGtotal, 'ERROR', error].join(',') + '\n');
+    DEBUGhttpTime = config.fragmentsClient._httpClient.DEBUGHTTPTime;
+    DEBUGdataBytes = config.fragmentsClient._overallReceivedBytesTPFServer;
+    fs.appendFileSync(logname, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGdataBytes, DEBUGtotal, 'ERROR', error].join(',') + '\n');
     process.exit();
   });
 
@@ -96,7 +103,9 @@ try {
     DEBUGhttp = config.fragmentsClient._httpClient.DEBUGcalls;
     DEBUGtps = config.fragmentsClient._numberOfTriplePatternsInQuery;
     DEBUGdata = config.fragmentsClient._overallNumberOfTriplesReceived;
-    fs.appendFileSync(logname, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGdata, DEBUGtotal].join(',') + '\n');
+    DEBUGhttpTime = config.fragmentsClient._httpClient.DEBUGHTTPTime;
+    DEBUGdataBytes = config.fragmentsClient._overallReceivedBytesTPFServer;
+    fs.appendFileSync(logname, [queryFile,DEBUGtps,DEBUGfirstTime, DEBUGfirstHttp, DEBUGtime, DEBUGhttp, DEBUGhttpTime, DEBUGdata, DEBUGdataBytes, DEBUGtotal].join(',') + '\n');
     process.exit(0); //process.stdout.uncork(); //flush();
   });
 }

@@ -14,7 +14,7 @@ def main(argv):
             for e in n:
                 f = dict()
                 for var in e:
-                    val = e[var]
+                    val = e[var][u'value']
                     f[var] = val
                 f = OrderedDict(sorted(f.items(), key=lambda t: t[0]))
                 print f
