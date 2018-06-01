@@ -1,1 +1,0 @@
-prefix dbp: <http://dbpedia.org/property/>  prefix dbo: <http://dbpedia.org/ontology/>  SELECT DISTINCT * WHERE {    ?v1 dbp:author ?v2 .   ?v2 dbo:nationality ?v3 .   ?v3 <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Countries_in_the_Caribbean>  } 

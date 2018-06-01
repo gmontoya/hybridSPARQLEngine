@@ -1,1 +1,0 @@
-prefix dbp: <http://dbpedia.org/property/>  SELECT DISTINCT * WHERE {   ?v1 foaf:name ?v2 .   ?v1 dbp:location <http://dbpedia.org/resource/Germany> .   ?v1 foaf:homepage ?v4 .   ?v5 foaf:homepage ?v4 .   ?v5 foaf:name ?v6 .   ?v5 dbp:location <http://dbpedia.org/resource/France> . } 

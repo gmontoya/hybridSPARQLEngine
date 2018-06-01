@@ -1,1 +1,0 @@
-prefix dbo: <http://dbpedia.org/ontology/>  SELECT DISTINCT * WHERE {   ?v1 rdf:type  <http://dbpedia.org/ontology/Governor> .   ?v1 rdfs:label ?v2 .   ?v1 foaf:homepage ?v3 .   ?v1 dbo:birthPlace ?v4 .   ?v1 foaf:name ?v5 . } 
