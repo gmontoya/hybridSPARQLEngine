@@ -11,7 +11,7 @@ s=$2
 # number of clients per vm
 n=$3
 c=$4
-max=5
+max=15
 t=5
 ##cd /home/roott/brTPF/Client.js-brTPF
 cd /home/roott/Client.js-brTPF

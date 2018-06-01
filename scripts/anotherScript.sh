@@ -1,1 +1,1 @@
-mkdir /home/roott/watdiv_queries
+mkdir /home/roott/watdiv_answers

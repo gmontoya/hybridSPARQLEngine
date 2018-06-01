@@ -17,6 +17,7 @@ c=$7
 m=$8
 # timeout in minutes
 o=$9
+f=${10}
 
 #techniques="brTPF endpoint"
 #techniques="endpoint"
@@ -41,7 +42,7 @@ for t in ${techniques}; do
   for i in `seq 0 ${y}`; do
     a=${addresses[$i]}
     echo "running ${t} experiments on ${a}"
-    ssh roott@${a} 'bash -s' < runWorkloadWatDiv.sh ${b} ${mn} ${t} ${a} ${n} ${c} ${threshold} ${m} ${o} > outputRunWorkloadWatDiv_${t}_${a}_${b}_${c} &
+    ssh roott@${a} 'bash -s' < runWorkloadWatDiv.sh ${b} ${mn} ${t} ${a} ${n} ${c} ${threshold} ${m} ${o} ${f} > outputRunWorkloadWatDiv_${t}_${a}_${b}_${c} &
     pid=$!
     spids="$spids $pid"
     b=$(($b+1))

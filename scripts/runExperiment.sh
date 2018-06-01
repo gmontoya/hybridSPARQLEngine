@@ -3,9 +3,12 @@
 
 techniques="brTPF-client-eval hybridTPF-client-eval endpoint-client-eval"
 addresses="172.19.2.115 172.19.2.107 172.19.2.118 172.19.2.111"
-b=0 # initial id, it should be 0 for WatDiv setup
-n=8 # number of clients to consider per vm
-c=false # count bytes? (true or false)
+# initial id, it should be 0 for WatDiv setup
+b=0
+# number of clients to consider per vm
+n=8
+# count bytes? (true or false); use false to measure the execution time and true to measure data transfer
+c=false
 
 for t in ${techniques}; do
   spids=""

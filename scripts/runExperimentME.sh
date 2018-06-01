@@ -1,14 +1,16 @@
 #!/bin/bash
 
 #s=$1
-techniques="brTPF-client-eval hybridTPF-client-eval endpoint-client-eval"
+techniques="endpoint-client-eval"
+#techniques="brTPF-client-eval hybridTPF-client-eval endpoint-client-eval"
 addresses="172.19.2.115 172.19.2.107 172.19.2.118 172.19.2.111"
-b=13
 # initial id
-n=4
+# use values that do not overlap with the ones of the WatDivExperiment (avoid 0, 193, 386, 579,...,5983)
+b=13
 # number of clients per vm
+n=4
+# count bytes? (true or false); use false to measure the execution time and true to measure data transfer
 c=true
-# count bytes? (true or false)
 
 for t in ${techniques}; do
   spids=""

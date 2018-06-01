@@ -4,14 +4,14 @@
 techniques="hybridTPF"
 #"brTPF hybridTPF endpoint"
 #declare -a addresses=("172.19.2.115" "172.19.2.107" "172.19.2.118" "172.19.2.111")
-declare -a addresses=("172.19.2.107")
+declare -a addresses=("172.19.2.118")
 
 resultsFolder=/home/roott/tmp/resultsTestWatDiv
 
 # initial id
-b=1
+b=2
 # number of clients
-n=2
+n=1
 #4
 # number of vms
 x=${#addresses[@]}

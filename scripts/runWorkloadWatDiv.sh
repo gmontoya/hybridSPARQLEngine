@@ -16,6 +16,7 @@ t=$7
 e="http://172.19.2.112:8890/sparql?default-graph-uri=http%3A%2F%2Fwatdiv10M&query="
 m=$8
 o=$9
+f=${10}
 
 cd /home/roott/Client.js-brTPF
 
@@ -23,7 +24,7 @@ cd /home/roott/Client.js-brTPF
 spids=""
 for i in `seq 1 ${n}`; do
     rm /home/roott/Client.js-brTPF/eval_${h}_${k}.csv
-    ./eval.sh ${s} /home/roott/Client.js-brTPF/config.json ${folder}/client_${k} ${o} 30 ${t} ${k} ${c} ${e} ${m} > outputEvalWatDiv_${s}_${a}_${k}_${c} &
+    ./eval.sh ${s} ${f} ${folder}/client_${k} ${o} 30 ${t} ${k} ${c} ${e} ${m} > outputEvalWatDiv_${s}_${a}_${k}_${c} &
     pid=$!
     spids="$spids $pid"
     k=$(($k+$x))
